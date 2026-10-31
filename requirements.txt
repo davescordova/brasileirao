@@ -1,0 +1,7 @@
+numpy
+pandas
+requests
+pymc
+numpyro
+jax
+plotly
