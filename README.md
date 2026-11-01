@@ -33,13 +33,12 @@ Daily-updated probabilities of every club's final position in the **Campeonato B
 
 ## 🤖 Automation
 
-A [GitHub Actions workflow](.github/workflows/update.yml) runs every day at **06:17 (Brasília)**:
+A [GitHub Actions workflow](.github/workflows/update.yml) runs every day at **02:39 (Brasília)**:
 
 - runs `brasileirao.py`
 - commits a dated snapshot to [`data/history/`](data/history)
 - publishes `site/` to GitHub Pages
 
-It can also be started manually from the **Actions** tab (`Run workflow`).
 
 ## 💻 Run locally
 
