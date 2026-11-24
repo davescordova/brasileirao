@@ -2,24 +2,15 @@ name: Update Brasileirão predictions
 
 on:
   schedule:
-    - cron: "0 5 * * *"   # every day at 05:00 UTC (01:00 Cuiabá / 02:00 Brasília)
-  workflow_dispatch:         # "Run workflow" button in the Actions tab
+    - cron: "0 5 * * *"
+  workflow_dispatch:
 
 permissions:
-  contents: write   # commit the CSV history
-  pages: write      # publish to GitHub Pages
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  contents: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v5
 
@@ -45,11 +36,8 @@ jobs:
             git push origin main
           fi
 
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: site
-
-      - id: deployment
-        uses: actions/deploy-pages@v5
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
