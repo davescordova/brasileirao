@@ -2,7 +2,7 @@ name: Update Brasileirão predictions
 
 on:
   schedule:
-    - cron: "0 5 * * *"   # every day at 05:39 UTC (02:39 Brasília)
+    - cron: "0 5 * * *"   # every day at 05:00 UTC (01:00 Cuiabá / 02:00 Brasília)
   workflow_dispatch:         # "Run workflow" button in the Actions tab
 
 permissions:
@@ -39,14 +39,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git add data/history
-          git diff --cached --quiet || git commit -m "Update predictions $(date -u +%Y-%m-%d)"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "Update predictions $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main
+            git push origin main
+          fi
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: "."
 
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
